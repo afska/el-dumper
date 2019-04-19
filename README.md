@@ -1,12 +1,16 @@
 # GB Cartridge Dumper
-Basado en https://github.com/insidegadgets/GBCartRead
+:video_game: Basado en https://github.com/insidegadgets/GBCartRead
+
+![image](https://user-images.githubusercontent.com/1631752/56398010-edd0c800-621c-11e9-8048-cc8fcd4c1204.jpg)
+
+![image](https://user-images.githubusercontent.com/1631752/56398179-9ed76280-621d-11e9-88cc-39521ff052c8.jpg)
 
 ![image](https://user-images.githubusercontent.com/1631752/53384943-72107880-395b-11e9-828f-23b45eecf5db.png)
 
 ## Instrucciones
 - `sudo dnf install python3`
 - `pip3 install pyserial`
-- Flashear GBCartRead_v1_5.ino al Arduino
+- Flashear `GBCartRead_v1_5.ino` al Arduino
 - `python3 GBCartRead_v1.5_Python_Reader.py` (revisar puerto `/dev/ttyACM0`)
 
 ## Referencias
