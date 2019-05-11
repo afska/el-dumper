@@ -82,7 +82,9 @@ export default class Dumper extends EventEmitter {
 	}
 
 	dispose() {
-		this.serialPort.close();
+		try {
+			this.serialPort.close();
+		} catch (e) {}
 		this.serialPort.removeAllListeners();
 		this.parser.removeAllListeners();
 		this.removeAllListeners();
@@ -96,22 +98,34 @@ export default class Dumper extends EventEmitter {
 
 			let copiedBytes = 0;
 
-			const wait = () => {
-				this._cleanBuffer();
-				this._readLine()
-					.then(({ line }) => {
-						console.log(line);
-						if (line.indexOf("START") !== -1 || line.indexOf("NEXT") !== -1) {
-							this.serialPort.write(buffer.slice(copiedBytes, CHUNK_SIZE));
-							copiedBytes += CHUNK_SIZE;
-						}
-						wait();
-					})
-					.catch((e) => reject(e));
+			this._readLine()
+				.then(({ line, i }) => {
+					if (line !== "START") reject(new Error("Bad response"));
 
-				// TODO: FINISH
-			};
-			wait();
+					const wait = (i = 0) => {
+						if (i === 0) this._cleanBuffer();
+						this._readLine(i)
+							.then(({ line }) => {
+								if (line.indexOf("END") !== -1) {
+									this.emit("progress", 100);
+									resolve();
+								}
+
+								if (line.indexOf("NEXT") !== -1) {
+									this.serialPort.write(
+										buffer.slice(copiedBytes, copiedBytes + CHUNK_SIZE)
+									);
+									copiedBytes += CHUNK_SIZE;
+									this.emit("progress", (copiedBytes * 100) / totalBytes);
+								}
+
+								wait();
+							})
+							.catch((e) => reject(e));
+					};
+					wait(i);
+				})
+				.catch((e) => reject(e));
 		});
 	}
 
