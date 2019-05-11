@@ -46,9 +46,14 @@ export default class Dumper extends EventEmitter {
 			this.serialPort.write("HEADER");
 
 			this._readLine().then(({ line: title, i }) => {
+				this.emit("progress", 25);
 				this._readLine(i).then(({ line: cartridgeType, i }) => {
+					this.emit("progress", 50);
 					this._readLine(i).then(({ line: romType, i }) => {
+						this.emit("progress", 75);
 						this._readLine(i).then(({ line: ramType, i }) => {
+							this.emit("progress", 100);
+
 							resolve({
 								title,
 								cartridgeType: getCartridgeType(cartridgeType),

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, FormControl } from "react-bootstrap";
+import { Line, Circle } from "rc-progress";
 import Dumper from "../gb/Dumper";
 import memory from "../memory";
 import strings from "./locales/strings";
@@ -14,7 +15,7 @@ const path = window.DESKTOP_REQUIRE("path");
 const INITIAL_DELAY = 2000;
 
 export default class App extends Component {
-	state = { header: null, error: null, serialPort: null };
+	state = { header: null, error: null, serialPort: null, progress: 0 };
 
 	render() {
 		return (
@@ -87,6 +88,15 @@ export default class App extends Component {
 						</Button>
 					</div>
 				)}
+
+				{this.state.progress < 100 && (
+					<Line
+						className="progressbar"
+						percent={this.state.progress}
+						strokeWidth={4}
+						strokeColor="#d3d3d3"
+					/>
+				)}
 			</div>
 		);
 	}
@@ -98,8 +108,9 @@ export default class App extends Component {
 	}
 
 	initializeDumper(serialPort) {
-		this.setState({ error: null });
+		this.setState({ error: null, progress: 0 });
 
+		if (this.dumper) this.dumper.removeAllListeners();
 		this.dumper = new Dumper(serialPort);
 
 		setTimeout(() => {
@@ -113,11 +124,15 @@ export default class App extends Component {
 				});
 		}, INITIAL_DELAY);
 
-		this.dumper.on("error", () => {
-			this.setState({
-				error: strings.errors.notConnected
+		this.dumper
+			.on("error", () => {
+				this.setState({
+					error: strings.errors.notConnected
+				});
+			})
+			.on("progress", (progress) => {
+				this.setState({ progress });
 			});
-		});
 	}
 
 	downloadGame = () => {
