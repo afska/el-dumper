@@ -9,6 +9,7 @@ const SerialPort = window.DESKTOP_REQUIRE("serialport");
 const ByteLength = window.DESKTOP_REQUIRE("@serialport/parser-byte-length");
 
 const NEWLINE = "\r\n";
+const CHUNK_SIZE = 64;
 const WAIT_TIME = 50;
 const DEBOUNCE_TIME = 1000;
 const TIMEOUT_TIME = 3000;
@@ -18,7 +19,7 @@ export default class Dumper extends EventEmitter {
 		super();
 
 		const serialPort = new SerialPort(port, { baudRate });
-		const parser = new ByteLength({ length: 64 });
+		const parser = new ByteLength({ length: CHUNK_SIZE });
 		serialPort.pipe(parser);
 
 		serialPort.on("open", () => {
@@ -72,18 +73,42 @@ export default class Dumper extends EventEmitter {
 		});
 	}
 
+	readGame(header) {
+		return this._readBinary("READROM", header.romSize.bytes);
+	}
+
 	readSave(header) {
 		return this._readBinary("READRAM", header.ramSize.bytes);
 	}
 
-	readGame(header) {
-		return this._readBinary("READROM", header.romSize.bytes);
+	writeSave(header, data) {
+		return this._writeBinary("WRITERAM", header.ramSize.bytes, data);
 	}
 
 	dispose() {
 		this.serialPort.removeAllListeners();
 		this.parser.removeAllListeners();
 		this.removeAllListeners();
+	}
+
+	_writeBinary(instruction, totalBytes, buffer) {
+		return new Promise((resolve, reject) => {
+			this._cleanBuffer();
+			this.serialPort.write(instruction);
+			this.emit("progress", 0);
+
+			let copiedBytes = 0;
+			const wait = () => {
+				// this.serialPort.write(buffer.slice(copiedBytes, CHUNK_SIZE));
+				// copiedBytes += CHUNK_SIZE;
+				// this._cleanBuffer();
+				// this._readLine().then(({ line }) => {
+				// 	console.log("LINE", line);
+				// }, 1000);
+				// TODO: FINISH
+			};
+			wait();
+		});
 	}
 
 	_readBinary(instruction, totalBytes) {

@@ -1,5 +1,6 @@
 export default {
 	allFiles: "All files",
+	areYouSure: "Are you sure?",
 	copying: "Copying...",
 	downloadGame: "Download game",
 	downloadSave: "Download save",

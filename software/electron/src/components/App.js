@@ -187,6 +187,11 @@ export default class App extends Component {
 			"sav",
 			strings.gameBoySaveFiles
 		);
+
+		if (!window.confirm(strings.areYouSure)) return;
+
+		const data = fs.readFileSync(loadPath);
+		this.dumper.writeSave(this.state.header, data);
 	};
 
 	get defaultSerialPort() {
