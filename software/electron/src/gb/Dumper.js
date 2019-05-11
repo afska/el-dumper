@@ -11,6 +11,7 @@ const ByteLength = window.DESKTOP_REQUIRE("@serialport/parser-byte-length");
 const NEWLINE = "\r\n";
 const WAIT_TIME = 50;
 const DEBOUNCE_TIME = 1000;
+const TIMEOUT_TIME = 3000;
 
 export default class Dumper extends EventEmitter {
 	constructor(port, baudRate = 57600) {
@@ -47,25 +48,27 @@ export default class Dumper extends EventEmitter {
 			this.serialPort.write("HEADER");
 			this.emit("progress", 0);
 
-			this._readLine().then(({ line: title, i }) => {
-				this.emit("progress", 25);
-				this._readLine(i).then(({ line: cartridgeType, i }) => {
-					this.emit("progress", 50);
-					this._readLine(i).then(({ line: romType, i }) => {
-						this.emit("progress", 75);
-						this._readLine(i).then(({ line: ramType, i }) => {
-							this.emit("progress", 100);
+			this._readLine()
+				.then(({ line: title, i }) => {
+					this.emit("progress", 25);
+					this._readLine(i).then(({ line: cartridgeType, i }) => {
+						this.emit("progress", 50);
+						this._readLine(i).then(({ line: romType, i }) => {
+							this.emit("progress", 75);
+							this._readLine(i).then(({ line: ramType, i }) => {
+								this.emit("progress", 100);
 
-							resolve({
-								title,
-								cartridgeType: getCartridgeType(cartridgeType),
-								romSize: getRomSize(parseInt(romType), cartridgeType),
-								ramSize: getRamSize(parseInt(ramType), cartridgeType)
+								resolve({
+									title,
+									cartridgeType: getCartridgeType(cartridgeType),
+									romSize: getRomSize(parseInt(romType), cartridgeType),
+									ramSize: getRamSize(parseInt(ramType), cartridgeType)
+								});
 							});
 						});
 					});
-				});
-			});
+				})
+				.catch(reject);
 		});
 	}
 
@@ -98,7 +101,9 @@ export default class Dumper extends EventEmitter {
 	}
 
 	_readLine(startIndex = 0) {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
+			let elapsedTime = 0;
+
 			const wait = () => {
 				setTimeout(() => {
 					const content = this.parser.buffer.slice(startIndex).toString();
@@ -108,7 +113,13 @@ export default class Dumper extends EventEmitter {
 					if (!_.isEmpty(line)) {
 						const i = startIndex + endIndex + NEWLINE.length;
 						resolve({ line, i });
-					} else wait();
+					} else {
+						elapsedTime += WAIT_TIME;
+
+						if (elapsedTime > TIMEOUT_TIME)
+							reject(new Error("Readline timeout"));
+						else wait();
+					}
 				}, WAIT_TIME);
 			};
 			wait();
