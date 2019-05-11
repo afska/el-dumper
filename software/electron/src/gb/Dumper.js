@@ -44,32 +44,28 @@ export default class Dumper extends EventEmitter {
 	}
 
 	readHeader() {
-		return new Promise((resolve, reject) => {
-			this._cleanBuffer();
-			this.serialPort.write("HEADER");
-			this.emit("progress", 0);
+		this._cleanBuffer();
+		this.serialPort.write("HEADER");
 
-			this._readLine()
-				.then(({ line: title, i }) => {
-					this.emit("progress", 25);
-					this._readLine(i).then(({ line: cartridgeType, i }) => {
-						this.emit("progress", 50);
-						this._readLine(i).then(({ line: romType, i }) => {
-							this.emit("progress", 75);
-							this._readLine(i).then(({ line: ramType, i }) => {
-								this.emit("progress", 100);
+		this.emit("progress", 0);
+		return this._readLine().then(({ line: title, i }) => {
+			this.emit("progress", 25);
+			return this._readLine(i).then(({ line: cartridgeType, i }) => {
+				this.emit("progress", 50);
+				return this._readLine(i).then(({ line: romType, i }) => {
+					this.emit("progress", 75);
+					return this._readLine(i).then(({ line: ramType, i }) => {
+						this.emit("progress", 100);
 
-								resolve({
-									title,
-									cartridgeType: getCartridgeType(cartridgeType),
-									romSize: getRomSize(parseInt(romType), cartridgeType),
-									ramSize: getRamSize(parseInt(ramType), cartridgeType)
-								});
-							});
-						});
+						return {
+							title,
+							cartridgeType: getCartridgeType(cartridgeType),
+							romSize: getRomSize(parseInt(romType), cartridgeType),
+							ramSize: getRamSize(parseInt(ramType), cartridgeType)
+						};
 					});
-				})
-				.catch(reject);
+				});
+			});
 		});
 	}
 
@@ -115,8 +111,8 @@ export default class Dumper extends EventEmitter {
 		return new Promise((resolve, reject) => {
 			this._cleanBuffer();
 			this.serialPort.write(instruction);
-			this.emit("progress", 0);
 
+			this.emit("progress", 0);
 			this.removeAllListeners("data");
 			const buffer = Buffer.alloc(totalBytes);
 			let copiedBytes = 0;
