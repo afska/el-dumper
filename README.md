@@ -7,11 +7,11 @@
 
 ![image](https://user-images.githubusercontent.com/1631752/53384943-72107880-395b-11e9-828f-23b45eecf5db.png)
 
-## Instrucciones
+## Instrucciones (Fedora)
 - `sudo dnf install python3`
 - `pip3 install pyserial`
-- Flashear `GBCartRead_v1_5.ino` al Arduino
-- `python3 GBCartRead_v1.5_Python_Reader.py` (revisar puerto `/dev/ttyACM0`)
+- Flashear `firmware/firmware.ino` al Arduino Uno
+- `python3 software/python-reader/reader.py` (revisar puerto `/dev/ttyACM0`)
 
 ## Referencias
 - (SLOT)(PROTOBOARD)(ARDUINO UNO)
