@@ -36,21 +36,35 @@ export default class App extends Component {
 						<strong>Cartridge type:</strong>{" "}
 						<span>{this.state.header.cartridgeType}</span>
 						<br />
-						<strong>ROM Size:</strong> <span>{this.state.header.romSize}</span>
+						<strong>ROM Size:</strong>{" "}
+						<span>{this.state.header.romSize.text}</span>
 						<br />
-						<strong>RAM Size:</strong> <span>{this.state.header.ramSize}</span>
+						<strong>RAM Size:</strong>{" "}
+						<span>{this.state.header.ramSize.text}</span>
 					</div>
 				)}
 
 				{isReady && (
 					<div className="section">
-						<Button className="button" onClick={this.downloadGame}>
+						<Button
+							className="button"
+							onClick={this.downloadGame}
+							disabled={!this.state.header.romSize.bytes}
+						>
 							<i className="fa fa-download" /> {strings.downloadGame}
 						</Button>
-						<Button className="button" onClick={this.downloadSave}>
+						<Button
+							className="button"
+							onClick={this.downloadSave}
+							disabled={!this.state.header.ramSize.bytes}
+						>
 							<i className="fa fa-download" /> {strings.downloadSave}
 						</Button>
-						<Button className="button" onClick={this.uploadSave}>
+						<Button
+							className="button"
+							onClick={this.uploadSave}
+							disabled={!this.state.header.ramSize.bytes}
+						>
 							<i className="fa fa-upload" /> {strings.uploadSave}
 						</Button>
 					</div>
