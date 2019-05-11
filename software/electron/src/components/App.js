@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import Dumper from "../gb/Dumper";
 import "./App.css";
 import gb from "../assets/gb.png";
+
+const INITIAL_DELAY = 2000;
 
 export default class App extends Component {
 	render() {
@@ -18,26 +21,12 @@ export default class App extends Component {
 	}
 
 	componentWillMount() {
-		const SerialPort = window.DESKTOP_REQUIRE("serialport");
-		const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");
+		this.dumper = new Dumper();
 
-		const port = new SerialPort("/dev/ttyACM0", { baudRate: 57600 });
-		const parser = new Readline({ delimiter: "\r\n" });
-		port.pipe(parser);
-
-		port.on("open", () => {
-			console.log("serial port open");
-
-			setTimeout(() => {
-				port.write(Buffer.from("HEADER"));
-			}, 2000);
-		});
-
-		parser.on("data", (data) => {
-			console.log("got word from arduino:", data);
-		});
-
-		window.port = port;
-		window.parser = parser;
+		setTimeout(() => {
+			this.dumper.readHeader().then((header) => {
+				console.log("HEADER", header);
+			});
+		}, INITIAL_DELAY);
 	}
 }

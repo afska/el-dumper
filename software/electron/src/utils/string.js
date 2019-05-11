@@ -1,5 +1,5 @@
 /* eslint-disable */
 
-String.prototype.onlyAscii = function() {
+String.prototype.asciiOnly = function() {
 	return this.replace(/[^\x00-\x7F]/g, "");
 };
