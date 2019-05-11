@@ -170,7 +170,9 @@ export default class App extends Component {
 			"sav"
 		);
 
-		this.dumper.readSave(this.state.header);
+		this.dumper.readSave(this.state.header).then((buffer) => {
+			console.log("BUFFER", buffer);
+		});
 	};
 
 	uploadSave = () => {

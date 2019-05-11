@@ -72,23 +72,27 @@ export default class Dumper extends EventEmitter {
 		});
 	}
 
-	readSave() {
+	readSave(header) {
 		return new Promise((resolve, reject) => {
-			// TODO: Progress
 			this._cleanBuffer();
 			this.serialPort.write("READRAM");
 			this.emit("progress", 0);
 
 			this.removeAllListeners("data");
-			let buffer = Buffer.alloc(0);
+			const totalBytes = header.ramSize.bytes;
+			const buffer = Buffer.alloc(totalBytes);
+			let copiedBytes = 0;
 
 			const end = _.debounce(() => {
+				this.emit("progress", 100);
 				resolve(buffer);
 				this.removeAllListeners("data");
 			}, DEBOUNCE_TIME);
 
 			this.on("data", (chunk) => {
-				buffer = Buffer.concat(buffer, chunk);
+				buffer.set(chunk, copiedBytes);
+				copiedBytes += chunk.length;
+				this.emit("progress", (copiedBytes * 100) / totalBytes);
 				end();
 			});
 		});
