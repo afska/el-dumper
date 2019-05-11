@@ -9,7 +9,7 @@ const SerialPort = window.DESKTOP_REQUIRE("serialport");
 const ByteLength = window.DESKTOP_REQUIRE("@serialport/parser-byte-length");
 
 const NEWLINE = "\r\n";
-const WAIT = 500;
+const WAIT = 50;
 
 export default class Dumper extends EventEmitter {
 	constructor(port, baudRate = 57600) {
@@ -66,6 +66,11 @@ export default class Dumper extends EventEmitter {
 				});
 			});
 		});
+	}
+
+	readSave() {
+		this._cleanBuffer();
+		this.serialPort.write("READRAM");
 	}
 
 	dispose() {
