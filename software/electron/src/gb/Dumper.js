@@ -82,9 +82,7 @@ export default class Dumper extends EventEmitter {
 	}
 
 	dispose() {
-		try {
-			this.serialPort.close();
-		} catch (e) {}
+		if (this.serialPort.isOpen) this.serialPort.close();
 		this.serialPort.removeAllListeners();
 		this.parser.removeAllListeners();
 		this.removeAllListeners();
@@ -108,7 +106,7 @@ export default class Dumper extends EventEmitter {
 							.then(({ line }) => {
 								if (line.indexOf("END") !== -1) {
 									this.emit("progress", 100);
-									resolve();
+									return resolve();
 								}
 
 								if (line.indexOf("NEXT") !== -1) {
