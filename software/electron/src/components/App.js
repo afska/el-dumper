@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import Dumper from "../gb/Dumper";
 import memory from "../memory";
+import strings from "./locales/strings";
 import _ from "lodash";
 import "./App.css";
 import gb from "../assets/gb.png";
@@ -20,7 +21,7 @@ export default class App extends Component {
 			<div className="centered container">
 				<div className="centered section">
 					<img className="logo" src={gb} alt="logo" />
-					<span className="title">ElDumper</span>
+					<span className="title">{strings.title}</span>
 					<img className="logo" src={gb} alt="logo" />
 				</div>
 
@@ -32,7 +33,7 @@ export default class App extends Component {
 
 								<FormControl
 									className="line input"
-									placeholder="Serial port (e.g. COM1 or /dev/ttyACM0)"
+									placeholder={strings.serialPortPlaceholder}
 									value={this.state.serialPort}
 									onChange={(e) => {
 										const serialPort = e.target.value;
@@ -47,13 +48,13 @@ export default class App extends Component {
 										this.initializeDumper(this.state.serialPort);
 									}}
 								>
-									<i className="fa fa-refresh" /> Try again
+									<i className="fa fa-refresh" /> {strings.tryAgain}
 								</Button>
 							</div>
 						) : (
 							<div className="centered container">
 								<span>
-									<i className="fa fa-spinner fa-spin" /> Reading...
+									<i className="fa fa-spinner fa-spin" /> {strings.reading}
 								</span>
 							</div>
 						)}
@@ -76,13 +77,13 @@ export default class App extends Component {
 				{this.state.header && (
 					<div className="section">
 						<Button className="button" onClick={this.downloadGame}>
-							<i className="fa fa-download" /> Download game
+							<i className="fa fa-download" /> {strings.downloadGame}
 						</Button>
 						<Button className="button" onClick={this.downloadSave}>
-							<i className="fa fa-download" /> Download save
+							<i className="fa fa-download" /> {strings.downloadSave}
 						</Button>
 						<Button className="button" onClick={this.uploadSave}>
-							<i className="fa fa-upload" /> Upload save
+							<i className="fa fa-upload" /> {strings.uploadSave}
 						</Button>
 					</div>
 				)}
@@ -108,13 +109,13 @@ export default class App extends Component {
 					this.setState({ header });
 				})
 				.catch((e) => {
-					this.setState({ error: "Error reading header :(" });
+					this.setState({ error: strings.errors.badHeader });
 				});
 		}, INITIAL_DELAY);
 
 		this.dumper.on("error", () => {
 			this.setState({
-				error: "The device is not connected. Try with another serial port!"
+				error: strings.errors.notConnected
 			});
 		});
 	}
@@ -123,7 +124,7 @@ export default class App extends Component {
 		const lastPath = memory.get("lastDownloadGamePath", "");
 
 		const newPath = dialog.showSaveDialog(null, {
-			title: "Download game",
+			title: strings.downloadGame,
 			defaultPath: path.join(lastPath, `${this.state.header.title}.gb`)
 		});
 		if (!newPath) return;
@@ -135,7 +136,7 @@ export default class App extends Component {
 		const lastPath = memory.get("lastDownloadSavePath", "");
 
 		const newPath = dialog.showSaveDialog(null, {
-			title: "Download save",
+			title: strings.downloadSave,
 			defaultPath: path.join(lastPath, `${this.state.header.title}.sav`)
 		});
 		if (!newPath) return;
@@ -147,11 +148,11 @@ export default class App extends Component {
 		const lastPath = memory.get("lastDownloadSavePath", "");
 
 		const newPaths = dialog.showOpenDialog(null, {
-			title: "Upload save",
+			title: strings.uploadSave,
 			properties: ["openFile"],
 			filters: [
-				{ name: "Gameboy save file (.sav)", extensions: ["sav"] },
-				{ name: "All files", extensions: ["*"] }
+				{ name: strings.gameBoySaveFiles, extensions: ["sav"] },
+				{ name: strings.allFiles, extensions: ["*"] }
 			],
 			defaultPath: lastPath
 		});
