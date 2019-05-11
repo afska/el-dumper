@@ -82,6 +82,7 @@ export default class Dumper extends EventEmitter {
 	}
 
 	dispose() {
+		this.serialPort.close();
 		this.serialPort.removeAllListeners();
 		this.parser.removeAllListeners();
 		this.removeAllListeners();
@@ -94,13 +95,20 @@ export default class Dumper extends EventEmitter {
 			this.emit("progress", 0);
 
 			let copiedBytes = 0;
+
 			const wait = () => {
-				// this.serialPort.write(buffer.slice(copiedBytes, CHUNK_SIZE));
-				// copiedBytes += CHUNK_SIZE;
-				// this._cleanBuffer();
-				// this._readLine().then(({ line }) => {
-				// 	console.log("LINE", line);
-				// }, 1000);
+				this._cleanBuffer();
+				this._readLine()
+					.then(({ line }) => {
+						console.log(line);
+						if (line.indexOf("START") !== -1 || line.indexOf("NEXT") !== -1) {
+							this.serialPort.write(buffer.slice(copiedBytes, CHUNK_SIZE));
+							copiedBytes += CHUNK_SIZE;
+						}
+						wait();
+					})
+					.catch((e) => reject(e));
+
 				// TODO: FINISH
 			};
 			wait();
@@ -118,6 +126,9 @@ export default class Dumper extends EventEmitter {
 			let copiedBytes = 0;
 
 			const end = _.debounce(() => {
+				if (copiedBytes < totalBytes)
+					return reject(new Error("Incomplete stream"));
+
 				this.emit("progress", 100);
 				resolve(buffer);
 				this.removeAllListeners("data");

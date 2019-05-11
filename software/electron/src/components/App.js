@@ -22,6 +22,8 @@ export default class App extends Component {
 		const isWaiting = this.state.progress < 100;
 		const isReady = !isWaiting && this.state.header;
 
+		// TODO: Extract components
+
 		return (
 			<div className="centered container">
 				<div className="centered section">
@@ -142,7 +144,7 @@ export default class App extends Component {
 				.catch((e) => {
 					if (this.$timeout !== timeout) return;
 					console.error("Error initializing dumper", e);
-					this.setState({ error: strings.errors.badHeader });
+					this.setState({ error: strings.errors.readError });
 				});
 		}, INITIAL_DELAY));
 
@@ -165,9 +167,17 @@ export default class App extends Component {
 			"gb"
 		);
 
-		this.dumper.readGame(this.state.header).then((buffer) => {
-			fs.writeFileSync(savePath, buffer);
-		});
+		if (!savePath) return;
+
+		this.dumper
+			.readGame(this.state.header)
+			.then((buffer) => {
+				fs.writeFileSync(savePath, buffer);
+			})
+			.catch((e) => {
+				console.error("Error downloading game", e);
+				this.setState({ error: strings.errors.readError });
+			});
 	};
 
 	downloadSave = () => {
@@ -177,9 +187,17 @@ export default class App extends Component {
 			"sav"
 		);
 
-		this.dumper.readSave(this.state.header).then((buffer) => {
-			fs.writeFileSync(savePath, buffer);
-		});
+		if (!savePath) return;
+
+		this.dumper
+			.readSave(this.state.header)
+			.then((buffer) => {
+				fs.writeFileSync(savePath, buffer);
+			})
+			.catch((e) => {
+				console.error("Error downloading save", e);
+				this.setState({ error: strings.errors.readError });
+			});
 	};
 
 	uploadSave = () => {
@@ -190,10 +208,14 @@ export default class App extends Component {
 			strings.gameBoySaveFiles
 		);
 
+		if (!loadPath) return;
 		if (!window.confirm(strings.areYouSure)) return;
 
 		const data = fs.readFileSync(loadPath);
-		this.dumper.writeSave(this.state.header, data);
+		this.dumper.writeSave(this.state.header, data).catch((e) => {
+			console.error("Error uploading save", e);
+			this.setState({ error: strings.errors.writeError });
+		});
 	};
 
 	get defaultSerialPort() {

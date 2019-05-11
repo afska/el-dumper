@@ -5,8 +5,9 @@ export default {
 	downloadGame: "Download game",
 	downloadSave: "Download save",
 	errors: {
-		badHeader: "Error reading header :(",
-		notConnected: "The device is not connected. Try with another serial port!"
+		notConnected: "The device is not connected. Try with another serial port!",
+		readError: "Read error :(",
+		writeError: "Write error :("
 	},
 	gameBoySaveFiles: "Gameboy save files (.sav)",
 	reading: "Reading...",
