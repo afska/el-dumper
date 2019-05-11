@@ -9,7 +9,8 @@ const SerialPort = window.DESKTOP_REQUIRE("serialport");
 const ByteLength = window.DESKTOP_REQUIRE("@serialport/parser-byte-length");
 
 const NEWLINE = "\r\n";
-const WAIT = 50;
+const WAIT_TIME = 50;
+const DEBOUNCE_TIME = 1000;
 
 export default class Dumper extends EventEmitter {
 	constructor(port, baudRate = 57600) {
@@ -44,8 +45,8 @@ export default class Dumper extends EventEmitter {
 		return new Promise((resolve, reject) => {
 			this._cleanBuffer();
 			this.serialPort.write("HEADER");
-
 			this.emit("progress", 0);
+
 			this._readLine().then(({ line: title, i }) => {
 				this.emit("progress", 25);
 				this._readLine(i).then(({ line: cartridgeType, i }) => {
@@ -69,8 +70,25 @@ export default class Dumper extends EventEmitter {
 	}
 
 	readSave() {
-		this._cleanBuffer();
-		this.serialPort.write("READRAM");
+		return new Promise((resolve, reject) => {
+			// TODO: Progress
+			this._cleanBuffer();
+			this.serialPort.write("READRAM");
+			this.emit("progress", 0);
+
+			this.removeAllListeners("data");
+			let buffer = Buffer.alloc(0);
+
+			const end = _.debounce(() => {
+				resolve(buffer);
+				this.removeAllListeners("data");
+			}, DEBOUNCE_TIME);
+
+			this.on("data", (chunk) => {
+				buffer = Buffer.concat(buffer, chunk);
+				end();
+			});
+		});
 	}
 
 	dispose() {
@@ -91,7 +109,7 @@ export default class Dumper extends EventEmitter {
 						const i = startIndex + endIndex + NEWLINE.length;
 						resolve({ line, i });
 					} else wait();
-				}, WAIT);
+				}, WAIT_TIME);
 			};
 			wait();
 		});
