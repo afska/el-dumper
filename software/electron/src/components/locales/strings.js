@@ -1,5 +1,6 @@
 export default {
 	allFiles: "All files",
+	copying: "Copying...",
 	downloadGame: "Download game",
 	downloadSave: "Download save",
 	errors: {

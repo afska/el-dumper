@@ -18,6 +18,9 @@ export default class App extends Component {
 	state = { header: null, error: null, serialPort: null, progress: 0 };
 
 	render() {
+		const isWaiting = this.state.progress < 100;
+		const isReady = !isWaiting && this.state.header;
+
 		return (
 			<div className="centered container">
 				<div className="centered section">
@@ -26,7 +29,34 @@ export default class App extends Component {
 					<img className="logo" src={gb} alt="logo" />
 				</div>
 
-				{!this.state.header && (
+				{isReady && (
+					<div className="section">
+						<strong>Title:</strong> <span>{this.state.header.title}</span>
+						<br />
+						<strong>Cartridge type:</strong>{" "}
+						<span>{this.state.header.cartridgeType}</span>
+						<br />
+						<strong>ROM Size:</strong> <span>{this.state.header.romSize}</span>
+						<br />
+						<strong>RAM Size:</strong> <span>{this.state.header.ramSize}</span>
+					</div>
+				)}
+
+				{isReady && (
+					<div className="section">
+						<Button className="button" onClick={this.downloadGame}>
+							<i className="fa fa-download" /> {strings.downloadGame}
+						</Button>
+						<Button className="button" onClick={this.downloadSave}>
+							<i className="fa fa-download" /> {strings.downloadSave}
+						</Button>
+						<Button className="button" onClick={this.uploadSave}>
+							<i className="fa fa-upload" /> {strings.uploadSave}
+						</Button>
+					</div>
+				)}
+
+				{isWaiting && (
 					<div>
 						{this.state.error ? (
 							<div className="centered container">
@@ -55,41 +85,15 @@ export default class App extends Component {
 						) : (
 							<div className="centered container">
 								<span>
-									<i className="fa fa-spinner fa-spin" /> {strings.reading}
+									<i className="fa fa-spinner fa-spin" />{" "}
+									{this.state.header ? strings.copying : strings.reading}
 								</span>
 							</div>
 						)}
 					</div>
 				)}
 
-				{this.state.header && (
-					<div className="section">
-						<strong>Title:</strong> <span>{this.state.header.title}</span>
-						<br />
-						<strong>Cartridge type:</strong>{" "}
-						<span>{this.state.header.cartridgeType}</span>
-						<br />
-						<strong>ROM Size:</strong> <span>{this.state.header.romSize}</span>
-						<br />
-						<strong>RAM Size:</strong> <span>{this.state.header.ramSize}</span>
-					</div>
-				)}
-
-				{this.state.header && (
-					<div className="section">
-						<Button className="button" onClick={this.downloadGame}>
-							<i className="fa fa-download" /> {strings.downloadGame}
-						</Button>
-						<Button className="button" onClick={this.downloadSave}>
-							<i className="fa fa-download" /> {strings.downloadSave}
-						</Button>
-						<Button className="button" onClick={this.uploadSave}>
-							<i className="fa fa-upload" /> {strings.uploadSave}
-						</Button>
-					</div>
-				)}
-
-				{this.state.progress < 100 && (
+				{isWaiting && (
 					<Line
 						className="progressbar"
 						percent={this.state.progress}
