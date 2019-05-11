@@ -52,7 +52,9 @@ export default class App extends Component {
 							</div>
 						) : (
 							<div className="centered container">
-								<span>Reading...</span>
+								<span>
+									<i className="fa fa-spinner fa-spin" /> Reading...
+								</span>
 							</div>
 						)}
 					</div>
