@@ -130,19 +130,21 @@ export default class App extends Component {
 		this.setState({ header: null, error: null, progress: 0 });
 
 		if (this.dumper) this.dumper.dispose();
+		if (this.$timeout) clearTimeout(this.$timeout);
 		this.dumper = new Dumper(serialPort);
 
-		setTimeout(() => {
+		const timeout = (this.$timeout = setTimeout(() => {
 			this.dumper
 				.readHeader()
 				.then((header) => {
 					this.setState({ header });
 				})
 				.catch((e) => {
+					if (this.$timeout !== timeout) return;
 					console.error("Error initializing dumper", e);
 					this.setState({ error: strings.errors.badHeader });
 				});
-		}, INITIAL_DELAY);
+		}, INITIAL_DELAY));
 
 		this.dumper
 			.on("error", (e) => {
