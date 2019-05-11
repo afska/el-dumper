@@ -22,13 +22,15 @@ export default class App extends Component {
 		const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");
 
 		const port = new SerialPort("/dev/ttyACM0", { baudRate: 57600 });
-		const parser = new Readline();
+		const parser = new Readline({ delimiter: "\r\n" });
 		port.pipe(parser);
 
 		port.on("open", () => {
 			console.log("serial port open");
 
-			port.write("HEADER");
+			setTimeout(() => {
+				port.write(Buffer.from("HEADER"));
+			}, 2000);
 		});
 
 		parser.on("data", (data) => {
