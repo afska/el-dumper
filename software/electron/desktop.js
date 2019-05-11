@@ -14,6 +14,7 @@ function createWindow() {
 		width: 640,
 		height: 480,
 		backgroundColor: "#000000",
+		resizable: false,
 		webPreferences: {
 			preload: __dirname + "/desktop-preload.js",
 			webSecurity: false
