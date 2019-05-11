@@ -1,0 +1,62 @@
+{
+  "name": "dumper",
+  "version": "1.0.0",
+  "description": "A GB Cartridge Dumper",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rodri042/gb-cartridge-dumper"
+  },
+  "author": {
+    "name": "[r]artworks"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "dev": "react-scripts start",
+    "prettier": "prettier 'src/**/*.{js,css}' --write",
+    "precommit": "pretty-quick --staged",
+    "electron": "ELECTRON_START_URL=http://localhost:3000 electron ."
+  },
+  "main": "desktop.js",
+  "build": {
+    "productName": "Dumper",
+    "extends": null,
+    "extraFiles": [
+      "icon-512x512.png"
+    ],
+    "linux": {
+      "target": "AppImage",
+      "category": "Game"
+    },
+    "appImage": {
+      "systemIntegration": "doNotAsk"
+    }
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-bootstrap": "^0.31.0",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "electron": "^2.0.8",
+    "electron-builder": "^20.38.2",
+    "husky": "^0.14.3",
+    "prettier": "1.16.0",
+    "pretty-quick": "^1.2.2",
+    "react-scripts": "^2.1.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
