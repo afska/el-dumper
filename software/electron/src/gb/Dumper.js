@@ -10,7 +10,7 @@ const SerialPort = window.DESKTOP_REQUIRE("serialport");
 const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");
 
 export default class Dumper extends EventEmitter {
-	constructor(port = "/dev/ttyACM0", baudRate = 57600) {
+	constructor(port, baudRate = 57600) {
 		super();
 
 		const serialPort = new SerialPort(port, { baudRate });

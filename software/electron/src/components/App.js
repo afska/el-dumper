@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, FormControl } from "react-bootstrap";
 import Dumper from "../gb/Dumper";
+import memory from "../memory";
 import "./App.css";
 import gb from "../assets/gb.png";
 
 const INITIAL_DELAY = 2000;
 
 export default class App extends Component {
-	state = { header: null, error: null };
+	state = { header: null, error: null, serialPort: null };
 
 	render() {
 		return (
@@ -19,11 +20,36 @@ export default class App extends Component {
 				</div>
 
 				{!this.state.header && (
-					<div className="centered section">
+					<div>
 						{this.state.error ? (
-							<span className="error">{this.state.error}</span>
+							<div className="centered container">
+								<span className="error">{this.state.error}</span>
+
+								<FormControl
+									className="line"
+									placeholder="Serial port (e.g. COM1 or /dev/ttyACM0)"
+									value={this.state.serialPort}
+									onChange={(e) => {
+										const serialPort = e.target.value;
+										this.setState({ serialPort });
+										memory.set("serialPort", serialPort);
+									}}
+								/>
+
+								<Button
+									className="line"
+									variant="primary"
+									onClick={() => {
+										this.initializeDumper(this.state.serialPort);
+									}}
+								>
+									<i className="fa fa-refresh" /> Try again
+								</Button>
+							</div>
 						) : (
-							<span>Reading...</span>
+							<div className="centered container">
+								<span>Reading...</span>
+							</div>
 						)}
 					</div>
 				)}
@@ -59,11 +85,15 @@ export default class App extends Component {
 	}
 
 	componentWillMount() {
-		this.initializeDumper();
+		const serialPort = memory.get("serialPort", "/dev/ttyACM0");
+		this.initializeDumper(serialPort);
+		this.setState({ serialPort });
 	}
 
-	initializeDumper() {
-		this.dumper = new Dumper();
+	initializeDumper(serialPort) {
+		this.setState({ error: null });
+
+		this.dumper = new Dumper(serialPort);
 
 		setTimeout(() => {
 			this.dumper
