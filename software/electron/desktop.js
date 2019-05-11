@@ -11,8 +11,8 @@ let mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
-		width: 1056,
-		height: 594,
+		width: 640,
+		height: 480,
 		backgroundColor: "#000000",
 		webPreferences: {
 			preload: __dirname + "/desktop-preload.js",
@@ -20,8 +20,6 @@ function createWindow() {
 		},
 		icon: path.join(__dirname, "/assets/icon-512x512.png")
 	});
-
-	mainWindow.setFullScreen(true);
 
 	if (process.env.SHOW_DEV_TOOLS) mainWindow.webContents.openDevTools();
 

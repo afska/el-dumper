@@ -1,0 +1,25 @@
+.container {
+	flex-direction: column;
+	padding: 25px;
+}
+
+.section {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.centered {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.logo {
+	width: 128px;
+	height: 128px;
+}
+
+.title {
+	font-size: 50px;
+	color: #426a9c;
+}
