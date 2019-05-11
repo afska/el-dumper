@@ -16,4 +16,26 @@ export default class App extends Component {
 			</div>
 		);
 	}
+
+	componentWillMount() {
+		const SerialPort = window.DESKTOP_REQUIRE("serialport");
+		const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");
+
+		const port = new SerialPort("/dev/ttyACM0", { baudRate: 57600 });
+		const parser = new Readline();
+		port.pipe(parser);
+
+		port.on("open", () => {
+			console.log("serial port open");
+
+			port.write("HEADER");
+		});
+
+		parser.on("data", (data) => {
+			console.log("got word from arduino:", data);
+		});
+
+		window.port = port;
+		window.parser = parser;
+	}
 }

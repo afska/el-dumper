@@ -1,9 +1,5 @@
 /* eslint-disable */
 
-String.prototype.allValidCharacters = function() {
-	return this.match(/[^a-z0-9áéíóúñü !\.,_-]/gim) === null;
-};
-
-String.prototype.ellipsize = function(limit) {
-	return `${this.substring(0, limit)}${this.length > limit ? "…" : ""}`;
+String.prototype.onlyAscii = function() {
+	return this.replace(/[^\x00-\x7F]/g, "");
 };

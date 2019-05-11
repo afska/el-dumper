@@ -43,11 +43,13 @@
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "serialport": "^7.1.5"
   },
   "devDependencies": {
-    "electron": "^2.0.8",
+    "electron": "^4.2.0",
     "electron-builder": "^20.38.2",
+    "electron-rebuild": "^1.8.4",
     "husky": "^0.14.3",
     "prettier": "1.16.0",
     "pretty-quick": "^1.2.2",

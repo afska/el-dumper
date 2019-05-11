@@ -4,6 +4,7 @@
 
 ```bash
 npm install
+npm rebuild --runtime=electron --target=4.2.0 --disturl=https://atom.io/download/atom-shell --build-from-source
 ```
 
 ## run
