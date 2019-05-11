@@ -67,6 +67,12 @@ export default class Dumper extends EventEmitter {
 		});
 	}
 
+	dispose() {
+		this.serialPort.removeAllListeners();
+		this.parser.removeAllListeners();
+		this.removeAllListeners();
+	}
+
 	_readLine(startIndex = 0) {
 		return new Promise((resolve) => {
 			const wait = () => {

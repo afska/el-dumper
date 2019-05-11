@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, FormControl } from "react-bootstrap";
-import { Line, Circle } from "rc-progress";
+import { Line } from "rc-progress";
 import Dumper from "../gb/Dumper";
 import memory from "../memory";
 import strings from "./locales/strings";
@@ -110,7 +110,7 @@ export default class App extends Component {
 	initializeDumper(serialPort) {
 		this.setState({ error: null, progress: 0 });
 
-		if (this.dumper) this.dumper.removeAllListeners();
+		if (this.dumper) this.dumper.dispose();
 		this.dumper = new Dumper(serialPort);
 
 		setTimeout(() => {
