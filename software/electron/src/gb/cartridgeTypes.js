@@ -1,0 +1,30 @@
+const types = {
+	0: "ROM ONLY",
+	1: "MBC1",
+	2: "MBC1+RAM",
+	3: "MBC1+RAM+BATTERY",
+	5: "MBC2",
+	6: "MBC2+BATTERY",
+	8: "ROM+RAM",
+	9: "ROM+RAM+BATTERY",
+	11: "MMM01",
+	12: "MMM01+RAM",
+	13: "MMM01+RAM+BATTERY",
+	15: "MBC3+TIMER+BATTERY",
+	16: "MBC3+TIMER+RAM+BATTERY",
+	17: "MBC3",
+	18: "MBC3+RAM",
+	19: "MBC3+RAM+BATTERY",
+	21: "MBC4",
+	22: "MBC4+RAM",
+	23: "MBC4+RAM+BATTERY",
+	25: "MBC5",
+	26: "MBC5+RAM",
+	27: "MBC5+RAM+BATTERY",
+	28: "MBC5+RUMBLE",
+	29: "MBC5+RUMBLE+RAM",
+	30: "MBC5+RUMBLE+RAM+BATTERY",
+	252: "GAMEBOY CAMERA"
+};
+
+export default (cartridgeType) => types[cartridgeType] || "Not found";
