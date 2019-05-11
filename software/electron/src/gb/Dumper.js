@@ -12,12 +12,18 @@ const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");
 export default class Dumper extends EventEmitter {
 	constructor(port = "/dev/ttyACM0", baudRate = 57600) {
 		super();
+
 		const serialPort = new SerialPort(port, { baudRate });
 		const parser = new Readline({ delimiter: "\r\n" });
 		serialPort.pipe(parser);
 
 		serialPort.on("open", () => {
 			console.log("Serial Port open...");
+			this.emit("open");
+		});
+
+		serialPort.on("error", (e) => {
+			this.emit("error", e);
 		});
 
 		parser.on("data", (data) => {
@@ -46,8 +52,8 @@ export default class Dumper extends EventEmitter {
 					resolve({
 						title: lines[0],
 						cartridgeType: getCartridgeType(cartridgeType),
-						romType: getRomSize(parseInt(lines[2]), cartridgeType),
-						ramType: getRamSize(parseInt(lines[3]), cartridgeType)
+						romSize: getRomSize(parseInt(lines[2]), cartridgeType),
+						ramSize: getRamSize(parseInt(lines[3]), cartridgeType)
 					});
 				}
 			});

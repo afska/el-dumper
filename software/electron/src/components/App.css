@@ -4,8 +4,8 @@
 }
 
 .section {
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .centered {
@@ -22,4 +22,8 @@
 .title {
 	font-size: 50px;
 	color: #426a9c;
+}
+
+.error {
+	color: red;
 }

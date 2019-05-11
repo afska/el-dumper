@@ -1,5 +1,5 @@
 {
-  "name": "dumper",
+  "name": "eldumper",
   "version": "1.0.0",
   "description": "A GB Cartridge Dumper",
   "private": true,
@@ -23,7 +23,7 @@
   },
   "main": "desktop.js",
   "build": {
-    "productName": "Dumper",
+    "productName": "ElDumper",
     "extends": null,
     "extraFiles": [
       "icon-512x512.png"

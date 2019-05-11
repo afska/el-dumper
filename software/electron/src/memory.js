@@ -36,6 +36,6 @@ export default {
 			.DESKTOP_REQUIRE("electron")
 			.remote.app.getPath("appData");
 
-		return `${appDataPath}/dumper.json`;
+		return `${appDataPath}/eldumper.json`;
 	}
 };
