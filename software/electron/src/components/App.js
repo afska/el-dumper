@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, FormControl } from "react-bootstrap";
 import Dumper from "../gb/Dumper";
 import memory from "../memory";
+import _ from "lodash";
 import "./App.css";
 import gb from "../assets/gb.png";
 
@@ -75,10 +76,10 @@ export default class App extends Component {
 						<Button className="button" onClick={this.downloadGame}>
 							<i className="fa fa-download" /> Download game
 						</Button>
-						<Button className="button">
+						<Button className="button" onClick={this.downloadSave}>
 							<i className="fa fa-download" /> Download save
 						</Button>
-						<Button className="button">
+						<Button className="button" onClick={this.uploadSave}>
 							<i className="fa fa-upload" /> Upload save
 						</Button>
 					</div>
@@ -128,9 +129,37 @@ export default class App extends Component {
 		memory.set("lastDownloadGamePath", path.dirname(newPath));
 	};
 
+	downloadSave = () => {
+		const lastPath = memory.get("lastDownloadSavePath", "");
+
+		const newPath = dialog.showSaveDialog(null, {
+			title: "Download save",
+			defaultPath: path.join(lastPath, `${this.state.header.title}.sav`)
+		});
+		if (!newPath) return;
+
+		memory.set("lastDownloadSavePath", path.dirname(newPath));
+	};
+
+	uploadSave = () => {
+		const lastPath = memory.get("lastDownloadSavePath", "");
+
+		const newPaths = dialog.showOpenDialog(null, {
+			title: "Upload save",
+			properties: ["openFile"],
+			filters: [
+				{ name: "Gameboy save file (.sav)", extensions: ["sav"] },
+				{ name: "All files", extensions: ["*"] }
+			],
+			defaultPath: lastPath
+		});
+		if (!newPaths || _.isEmpty(newPaths)) return;
+		const newPath = _.first(newPaths);
+
+		memory.set("lastUploadSavePath", path.dirname(newPath));
+	};
+
 	get defaultSerialPort() {
 		return process.platform === "win32" ? "COM1" : "/dev/ttyACM0";
 	}
 }
-
-// filters: { name: "Gameboy ROM", extensions: ["gb"] }
