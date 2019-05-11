@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { Button, FormControl } from "react-bootstrap";
-import { Line } from "rc-progress";
+import Title from "./Title";
+import GameInfo from "./GameInfo";
+import DumpButtons from "./DumpButtons";
+import Loading from "./Loading";
+import ProgressBar from "./ProgressBar";
+import Reconnect from "./Reconnect";
 import Dumper from "../gb/Dumper";
 import memory from "../memory";
 import strings from "./locales/strings";
 import _ from "lodash";
 import "./App.css";
-import gb from "../assets/gb.png";
 
 if (!window.DESKTOP_REQUIRE) throw new Error("Missing node.js access!");
 const dialog = window.DESKTOP_REQUIRE("electron").remote.dialog;
@@ -22,101 +25,43 @@ export default class App extends Component {
 		const isWaiting = this.state.progress < 100;
 		const isReady = !isWaiting && this.state.header;
 
-		// TODO: Extract components
-
 		return (
 			<div className="centered container">
-				<div className="centered section">
-					<img className="logo" src={gb} alt="logo" />
-					<span className="title">{strings.title}</span>
-					<img className="logo" src={gb} alt="logo" />
-				</div>
+				<Title />
+
+				{isReady && <GameInfo {...this.state.header} />}
 
 				{isReady && (
-					<div className="section">
-						<strong>Title:</strong> <span>{this.state.header.title}</span>
-						<br />
-						<strong>Cartridge type:</strong>{" "}
-						<span>{this.state.header.cartridgeType}</span>
-						<br />
-						<strong>ROM Size:</strong>{" "}
-						<span>{this.state.header.romSize.text}</span>
-						<br />
-						<strong>RAM Size:</strong>{" "}
-						<span>{this.state.header.ramSize.text}</span>
-					</div>
-				)}
-
-				{isReady && (
-					<div className="section">
-						<Button
-							className="button"
-							onClick={this.downloadGame}
-							disabled={!this.state.header.romSize.bytes}
-						>
-							<i className="fa fa-download" /> {strings.downloadGame}
-						</Button>
-						<Button
-							className="button"
-							onClick={this.downloadSave}
-							disabled={!this.state.header.ramSize.bytes}
-						>
-							<i className="fa fa-download" /> {strings.downloadSave}
-						</Button>
-						<Button
-							className="button"
-							onClick={this.uploadSave}
-							disabled={!this.state.header.ramSize.bytes}
-						>
-							<i className="fa fa-upload" /> {strings.uploadSave}
-						</Button>
-					</div>
+					<DumpButtons
+						onDownloadGame={this.downloadGame}
+						onDownloadSave={this.downloadSave}
+						onUploadSave={this.uploadSave}
+						header={this.state.header}
+					/>
 				)}
 
 				{isWaiting && (
 					<div>
 						{this.state.error ? (
-							<div className="centered container">
-								<span className="error">{this.state.error}</span>
-
-								<FormControl
-									className="line input"
-									placeholder={strings.serialPortPlaceholder}
-									value={this.state.serialPort}
-									onChange={(e) => {
-										const serialPort = e.target.value;
-										this.setState({ serialPort });
-										memory.set("serialPort", serialPort);
-									}}
-								/>
-
-								<Button
-									className="line"
-									onClick={() => {
-										this.initializeDumper(this.state.serialPort);
-									}}
-								>
-									<i className="fa fa-refresh" /> {strings.tryAgain}
-								</Button>
-							</div>
+							<Reconnect
+								serialPort={this.state.serialPort}
+								onSerialPortChange={(serialPort) => {
+									this.setState({ serialPort });
+									memory.set("serialPort", serialPort);
+								}}
+								onReconnect={() => {
+									this.initializeDumper(this.state.serialPort);
+								}}
+								error={this.state.error}
+							/>
 						) : (
-							<div className="centered container">
-								<span>
-									<i className="fa fa-spinner fa-spin" />{" "}
-									{this.state.header ? strings.copying : strings.reading}
-								</span>
-							</div>
+							<Loading hasHeader={!!this.state.header} />
 						)}
 					</div>
 				)}
 
 				{isWaiting && !this.state.error && (
-					<Line
-						className="progressbar"
-						percent={this.state.progress}
-						strokeWidth={4}
-						strokeColor="#d3d3d3"
-					/>
+					<ProgressBar progress={this.state.progress} />
 				)}
 			</div>
 		);

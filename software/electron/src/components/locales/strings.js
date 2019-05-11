@@ -10,6 +10,12 @@ export default {
 		writeError: "Write error :("
 	},
 	gameBoySaveFiles: "Gameboy save files (.sav)",
+	info: {
+		cartridgeType: "Cartridge type:",
+		title: "Title:",
+		ramSize: "RAM size",
+		romSize: "ROM size"
+	},
 	reading: "Reading...",
 	serialPortPlaceholder: "Serial port (e.g. COM1 or /dev/ttyACM0)",
 	title: "ElDumper",
