@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 import Dumper from "../gb/Dumper";
 import "./App.css";
 import gb from "../assets/gb.png";
@@ -28,7 +29,7 @@ export default class App extends Component {
 				)}
 
 				{this.state.header && (
-					<div>
+					<div className="section">
 						<strong>Title:</strong> <span>{this.state.header.title}</span>
 						<br />
 						<strong>Cartridge type:</strong>{" "}
@@ -37,6 +38,20 @@ export default class App extends Component {
 						<strong>ROM Size:</strong> <span>{this.state.header.romSize}</span>
 						<br />
 						<strong>RAM Size:</strong> <span>{this.state.header.ramSize}</span>
+					</div>
+				)}
+
+				{this.state.header && (
+					<div className="section">
+						<Button className="button" variant="primary">
+							<i className="fa fa-download" /> Download game
+						</Button>
+						<Button className="button" variant="primary">
+							<i className="fa fa-download" /> Download save
+						</Button>
+						<Button className="button" variant="primary">
+							<i className="fa fa-upload" /> Upload save
+						</Button>
 					</div>
 				)}
 			</div>
