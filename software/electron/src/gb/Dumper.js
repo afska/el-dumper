@@ -20,7 +20,7 @@ export default class Dumper extends EventEmitter {
 		serialPort.pipe(parser);
 
 		serialPort.on("open", () => {
-			console.log("Serial Port open...");
+			console.info("Serial Port open");
 			this.emit("open");
 		});
 
@@ -29,7 +29,7 @@ export default class Dumper extends EventEmitter {
 		});
 
 		parser.on("data", (data) => {
-			console.log("Data:", data);
+			console.info("Data:", data);
 			this.emit("data", data);
 		});
 
@@ -45,6 +45,7 @@ export default class Dumper extends EventEmitter {
 			this._cleanBuffer();
 			this.serialPort.write("HEADER");
 
+			this.emit("progress", 0);
 			this._readLine().then(({ line: title, i }) => {
 				this.emit("progress", 25);
 				this._readLine(i).then(({ line: cartridgeType, i }) => {

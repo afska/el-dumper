@@ -93,7 +93,7 @@ export default class App extends Component {
 					</div>
 				)}
 
-				{isWaiting && (
+				{isWaiting && !this.state.error && (
 					<Line
 						className="progressbar"
 						percent={this.state.progress}
@@ -124,12 +124,14 @@ export default class App extends Component {
 					this.setState({ header });
 				})
 				.catch((e) => {
+					console.error("Error initializing dumper", e);
 					this.setState({ error: strings.errors.badHeader });
 				});
 		}, INITIAL_DELAY);
 
 		this.dumper
-			.on("error", () => {
+			.on("error", (e) => {
+				console.error("Dumper error", e);
 				this.setState({
 					error: strings.errors.notConnected
 				});
