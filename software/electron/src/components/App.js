@@ -156,37 +156,61 @@ export default class App extends Component {
 	}
 
 	downloadGame = () => {
-		const lastPath = memory.get("lastDownloadGamePath", "");
-
-		const newPath = dialog.showSaveDialog(null, {
-			title: strings.downloadGame,
-			defaultPath: path.join(lastPath, `${this.state.header.title}.gb`)
-		});
-		if (!newPath) return;
-
-		memory.set("lastDownloadGamePath", path.dirname(newPath));
+		const savePath = this._showSaveDialog(
+			strings.downloadGame,
+			"lastDownloadGamePath",
+			"gb"
+		);
 	};
 
 	downloadSave = () => {
-		const lastPath = memory.get("lastDownloadSavePath", "");
+		const savePath = this._showSaveDialog(
+			strings.downloadSave,
+			"lastDownloadSavePath",
+			"sav"
+		);
 
-		const newPath = dialog.showSaveDialog(null, {
-			title: strings.downloadSave,
-			defaultPath: path.join(lastPath, `${this.state.header.title}.sav`)
-		});
-		if (!newPath) return;
-
-		memory.set("lastDownloadSavePath", path.dirname(newPath));
+		this.dumper.readSave(this.state.header);
 	};
 
 	uploadSave = () => {
-		const lastPath = memory.get("lastDownloadSavePath", "");
+		const loadPath = this._showLoadDialog(
+			strings.uploadSave,
+			"lastDownloadSavePath",
+			"sav",
+			strings.gameBoySaveFiles
+		);
+	};
+
+	get defaultSerialPort() {
+		return process.platform === "win32" ? "COM1" : "/dev/ttyACM0";
+	}
+
+	_showSaveDialog(title, lastPathKey, extension) {
+		const lastPath = memory.get(lastPathKey, "");
+
+		const newPath = dialog.showSaveDialog(null, {
+			title: title,
+			defaultPath: path.join(
+				lastPath,
+				`${this.state.header.title}.${extension}`
+			)
+		});
+		if (!newPath) return;
+
+		memory.set(lastPathKey, path.dirname(newPath));
+
+		return newPath;
+	}
+
+	_showLoadDialog(title, lastPathKey, extension, fileType) {
+		const lastPath = memory.get(lastPathKey, "");
 
 		const newPaths = dialog.showOpenDialog(null, {
-			title: strings.uploadSave,
+			title: title,
 			properties: ["openFile"],
 			filters: [
-				{ name: strings.gameBoySaveFiles, extensions: ["sav"] },
+				{ name: fileType, extensions: [extension] },
 				{ name: strings.allFiles, extensions: ["*"] }
 			],
 			defaultPath: lastPath
@@ -194,10 +218,8 @@ export default class App extends Component {
 		if (!newPaths || _.isEmpty(newPaths)) return;
 		const newPath = _.first(newPaths);
 
-		memory.set("lastUploadSavePath", path.dirname(newPath));
-	};
+		memory.set(lastPathKey, path.dirname(newPath));
 
-	get defaultSerialPort() {
-		return process.platform === "win32" ? "COM1" : "/dev/ttyACM0";
+		return newPath;
 	}
 }
