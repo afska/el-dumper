@@ -73,13 +73,26 @@ export default class Dumper extends EventEmitter {
 	}
 
 	readSave(header) {
+		return this._readBinary("READRAM", header.ramSize.bytes);
+	}
+
+	readGame(header) {
+		return this._readBinary("READROM", header.romSize.bytes);
+	}
+
+	dispose() {
+		this.serialPort.removeAllListeners();
+		this.parser.removeAllListeners();
+		this.removeAllListeners();
+	}
+
+	_readBinary(instruction, totalBytes) {
 		return new Promise((resolve, reject) => {
 			this._cleanBuffer();
-			this.serialPort.write("READRAM");
+			this.serialPort.write(instruction);
 			this.emit("progress", 0);
 
 			this.removeAllListeners("data");
-			const totalBytes = header.ramSize.bytes;
 			const buffer = Buffer.alloc(totalBytes);
 			let copiedBytes = 0;
 
@@ -96,12 +109,6 @@ export default class Dumper extends EventEmitter {
 				end();
 			});
 		});
-	}
-
-	dispose() {
-		this.serialPort.removeAllListeners();
-		this.parser.removeAllListeners();
-		this.removeAllListeners();
 	}
 
 	_readLine(startIndex = 0) {

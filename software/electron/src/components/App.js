@@ -162,6 +162,10 @@ export default class App extends Component {
 			"lastDownloadGamePath",
 			"gb"
 		);
+
+		this.dumper.readGame(this.state.header).then((buffer) => {
+			fs.writeFileSync(savePath, buffer);
+		});
 	};
 
 	downloadSave = () => {
