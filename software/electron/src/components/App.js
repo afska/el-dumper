@@ -5,6 +5,10 @@ import memory from "../memory";
 import "./App.css";
 import gb from "../assets/gb.png";
 
+if (!window.DESKTOP_REQUIRE) throw new Error("Missing node.js access!");
+const dialog = window.DESKTOP_REQUIRE("electron").remote.dialog;
+const path = window.DESKTOP_REQUIRE("path");
+
 const INITIAL_DELAY = 2000;
 
 export default class App extends Component {
@@ -26,7 +30,7 @@ export default class App extends Component {
 								<span className="error">{this.state.error}</span>
 
 								<FormControl
-									className="line"
+									className="line input"
 									placeholder="Serial port (e.g. COM1 or /dev/ttyACM0)"
 									value={this.state.serialPort}
 									onChange={(e) => {
@@ -38,7 +42,6 @@ export default class App extends Component {
 
 								<Button
 									className="line"
-									variant="primary"
 									onClick={() => {
 										this.initializeDumper(this.state.serialPort);
 									}}
@@ -69,13 +72,13 @@ export default class App extends Component {
 
 				{this.state.header && (
 					<div className="section">
-						<Button className="button" variant="primary">
+						<Button className="button" onClick={this.downloadGame}>
 							<i className="fa fa-download" /> Download game
 						</Button>
-						<Button className="button" variant="primary">
+						<Button className="button">
 							<i className="fa fa-download" /> Download save
 						</Button>
-						<Button className="button" variant="primary">
+						<Button className="button">
 							<i className="fa fa-upload" /> Upload save
 						</Button>
 					</div>
@@ -85,7 +88,7 @@ export default class App extends Component {
 	}
 
 	componentWillMount() {
-		const serialPort = memory.get("serialPort", "/dev/ttyACM0");
+		const serialPort = memory.get("serialPort", this.defaultSerialPort);
 		this.initializeDumper(serialPort);
 		this.setState({ serialPort });
 	}
@@ -112,4 +115,22 @@ export default class App extends Component {
 			});
 		});
 	}
+
+	downloadGame = () => {
+		const lastPath = memory.get("lastDownloadGamePath", "");
+
+		const newPath = dialog.showSaveDialog(null, {
+			title: "Download game",
+			defaultPath: path.join(lastPath, `${this.state.header.title}.gb`)
+		});
+		if (!newPath) return;
+
+		memory.set("lastDownloadGamePath", path.dirname(newPath));
+	};
+
+	get defaultSerialPort() {
+		return process.platform === "win32" ? "COM1" : "/dev/ttyACM0";
+	}
 }
+
+// filters: { name: "Gameboy ROM", extensions: ["gb"] }

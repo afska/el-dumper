@@ -4,7 +4,6 @@ import getRamSize from "./getRamSize";
 import _ from "lodash";
 
 if (!window.DESKTOP_REQUIRE) throw new Error("Missing node.js access!");
-
 const EventEmitter = window.DESKTOP_REQUIRE("events");
 const SerialPort = window.DESKTOP_REQUIRE("serialport");
 const Readline = window.DESKTOP_REQUIRE("@serialport/parser-readline");

@@ -1,8 +1,9 @@
 export default {
-	get(key, defaultValue = null) {
+	get(key, defaultValue = undefined) {
 		try {
 			const json = this._readData();
-			return json[key];
+			const value = json[key];
+			return value === undefined ? defaultValue : value;
 		} catch (e) {
 			return defaultValue;
 		}
