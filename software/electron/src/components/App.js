@@ -11,6 +11,7 @@ import gb from "../assets/gb.png";
 if (!window.DESKTOP_REQUIRE) throw new Error("Missing node.js access!");
 const dialog = window.DESKTOP_REQUIRE("electron").remote.dialog;
 const path = window.DESKTOP_REQUIRE("path");
+const fs = window.DESKTOP_REQUIRE("fs");
 
 const INITIAL_DELAY = 2000;
 
@@ -126,7 +127,7 @@ export default class App extends Component {
 	}
 
 	initializeDumper(serialPort) {
-		this.setState({ error: null, progress: 0 });
+		this.setState({ header: null, error: null, progress: 0 });
 
 		if (this.dumper) this.dumper.dispose();
 		this.dumper = new Dumper(serialPort);
@@ -171,7 +172,7 @@ export default class App extends Component {
 		);
 
 		this.dumper.readSave(this.state.header).then((buffer) => {
-			console.log("BUFFER", buffer);
+			fs.writeFileSync(savePath, buffer);
 		});
 	};
 

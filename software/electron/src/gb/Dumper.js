@@ -22,7 +22,7 @@ export default class Dumper extends EventEmitter {
 		serialPort.pipe(parser);
 
 		serialPort.on("open", () => {
-			console.info("Serial Port open");
+			console.log("Serial Port open");
 			this.emit("open");
 		});
 
@@ -31,7 +31,7 @@ export default class Dumper extends EventEmitter {
 		});
 
 		parser.on("data", (data) => {
-			console.info("Data:", data);
+			console.log("Data:", data);
 			this.emit("data", data);
 		});
 
