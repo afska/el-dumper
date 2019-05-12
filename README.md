@@ -1,6 +1,6 @@
 # ElDumper
 
-:video_game: A GB Cartridge Dumper, based on https://github.com/insidegadgets/GBCartRead
+:video_game: A GB Cartridge Dumper, based on [GBCartRead](https://github.com/insidegadgets/GBCartRead) :video_game:
 
 ## Pictures
 
