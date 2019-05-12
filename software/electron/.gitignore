@@ -2,6 +2,7 @@
 /coverage
 /build
 *.AppImage
+*.exe
 *.log
 *.tmp
 *.sublime-workspace
