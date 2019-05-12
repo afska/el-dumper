@@ -22,11 +22,12 @@
 
 ## Instructions
 
-### GUI (Linux & Windows)
+### Electron GUI (Linux & Windows)
 
+- Download it from **Releases**
 - Run `ElDumper.AppImage` or `ElDumper.exe`
 
-### Python (Fedora)
+### Python CLI (Fedora)
 
 - `sudo dnf install python3`
 - `pip3 install pyserial`
