@@ -81,6 +81,8 @@ export default class App extends Component {
 		this.dumper = new Dumper(serialPort);
 
 		const timeout = (this.$timeout = setTimeout(() => {
+			if (this.state.error) return;
+
 			this.dumper
 				.readHeader()
 				.then((header) => {
