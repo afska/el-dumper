@@ -24,7 +24,9 @@ try cp public/assets/icon-512x512.png build/
 # build desktop version
 try cd build/
 try ../node_modules/.bin/electron-builder . eldumper --linux --x64
+try ../node_modules/.bin/electron-builder . eldumper --win --x64
 try cd ../
 
 # move and rename
-try mv "build/dist/ElDumper 1.0.0.AppImage" eldumper.AppImage
+try mv "build/dist/ElDumper 1.0.0.AppImage" ElDumper.AppImage
+try mv "build/dist/ElDumper Setup 1.0.0.exe" ElDumper.exe
