@@ -1,5 +1,18 @@
-# GB Cartridge Dumper
-:video_game: Basado en https://github.com/insidegadgets/GBCartRead
+# ElDumper
+
+:video_game: A GB Cartridge Dumper, based on https://github.com/insidegadgets/GBCartRead
+
+## Pictures
+
+### Software
+
+![image](https://user-images.githubusercontent.com/1631752/57579671-cc5aa900-7475-11e9-924c-65e70b1aa2e0.png)
+
+![image](https://user-images.githubusercontent.com/1631752/57579675-d2e92080-7475-11e9-8060-1b67bea6f3bc.png)
+
+![image](https://user-images.githubusercontent.com/1631752/57579674-cfee3000-7475-11e9-8756-b0559059e4fd.png)
+
+### Hardware
 
 ![image](https://user-images.githubusercontent.com/1631752/56398010-edd0c800-621c-11e9-8048-cc8fcd4c1204.jpg)
 
@@ -7,32 +20,41 @@
 
 ![image](https://user-images.githubusercontent.com/1631752/53384943-72107880-395b-11e9-828f-23b45eecf5db.png)
 
-## Instrucciones (Fedora)
+## Instructions
+
+### GUI (Linux & Windows)
+
+- Run `ElDumper.AppImage` or `ElDumper.exe`
+
+### Python (Fedora)
+
 - `sudo dnf install python3`
 - `pip3 install pyserial`
-- Flashear `firmware/firmware.ino` al Arduino Uno
-- `python3 software/python-reader/reader.py` (revisar puerto `/dev/ttyACM0`)
+- Flash the **Arduino Uno** with `firmware/firmware.ino`
+- `python3 software/python-reader/reader.py` (check port `/dev/ttyACM0`)
 
-## Referencias
-- (SLOT)(PROTOBOARD)(ARDUINO UNO)
-- Los cartuchos van con la etiqueta para arriba, el pin 1 es el de abajo de todo.
-- El 74HC595N de la izquierda shiftea los puertos altos del cartucho.
-- El 74HC595N de derecha shiftea los puertos bajo del cartucho.
+## References
 
-## Conexiones
-- Conectar 5V a + de arriba a la derecha
-- Conectar GND a - de arriba a la derecha
-- Conectar PINA3 a la pista 13-abajo (pin #3 de GB, cable naranja)
-- Conectar PINA5 a la pista 10-abajo (pin #4 de GB, cable gris)
-- Conectar PINA4 a la pista 11-abajo (pin #5 de GB, cable blanco)
-- Conectar PIN12 a la pista 12-arriba (pines #11 de los 74HC595N, cables azules)
-- Conectar PIN11 a la pista 11-arriba (pin #14 del 74HC595N de la derecha, cable turquesa)
-- Conectar PIN10 a la pista 10-arriba (pines #12 de los 75HC595N, cables amarillos)
-- Conectar PIN09 a la pista 39-arriba (pin #29 de GB, cable gris)
-- Conectar PIN08 a la pista 38-arriba (pin #28 de GB, cable blanco)
-- Conectar PIN07 a la pista 37-arriba (pin #27 de GB, cable marrón)
-- Conectar PIN06 a la pista 36-arriba (pin #26 de GB, cable turquesa)
-- Conectar PIN05 a la pista 35-arriba (pin #25 de GB, cable azul)
-- Conectar PIN04 a la pista 34-arriba (pin #24 de GB, cable negro)
-- Conectar PIN03 a la pista 33-arriba (pin #23 de GB, cable rojo)
-- Conectar PIN02 a la pista 32-arriba (pin #22 de GB, cable blanco)
+- (SLOT)(BREADBOARD)(ARDUINO UNO)
+- Cartridge labels go upwards. Pin 1 is the lower one.
+- The left 74HC595N shifts the high ports of the cartridge.
+- The right 74HC595N shifts the low ports of the cartridge.
+
+## Connections
+
+- Connect 5V to the upper-right +
+- Connect GND to the upper-right -
+- Connect PINA3 to the 13-down trail (GB pin #3, orange cable)
+- Connect PINA5 to the 10-down trail (GB pin #4, gray cable)
+- Connect PINA4 to the 11-down trail (GB pin #5, white cable)
+- Connect PIN12 to the 12-up trail (74HC595N pins #11, blue cables)
+- Connect PIN11 to the 11-up trail (right 74HC595N pin #14, turquoise cable)
+- Connect PIN10 to the 10-up trail (75HC595N pins #12, yellow cables)
+- Connect PIN09 to the 39-up trail (GB pin #29, gray cable)
+- Connect PIN08 to the 38-up trail (GB pin #28, white cable)
+- Connect PIN07 to the 37-up trail (GB pin #27, brown cable)
+- Connect PIN06 to the 36-up trail (GB pin #26, turquoise cable)
+- Connect PIN05 to the 35-up trail (GB pin #25, blue cable)
+- Connect PIN04 to the 34-up trail (GB pin #24, black cable)
+- Connect PIN03 to the 33-up trail (GB pin #23, red cable)
+- Connect PIN02 to the 32-up trail (GB pin #22, white cable)
