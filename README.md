@@ -22,6 +22,8 @@
 
 ## Instructions
 
+Flash the **Arduino Uno** with `firmware/firmware.ino`
+
 ### Electron GUI (Linux & Windows)
 
 - Download it from **Releases**
@@ -31,7 +33,6 @@
 
 - `sudo dnf install python3`
 - `pip3 install pyserial`
-- Flash the **Arduino Uno** with `firmware/firmware.ino`
 - `python3 software/python-reader/reader.py` (check port `/dev/ttyACM0`)
 
 ## References
