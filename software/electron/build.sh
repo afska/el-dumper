@@ -20,6 +20,8 @@ try cp package.json build/
 try cp desktop.js build/
 try cp desktop-preload.js build/
 try cp public/assets/icon-512x512.png build/
+try cp public/assets/icon-512x512.ico build/icon.ico
+try cp public/assets/icon-512x512.png build/icon.png
 
 # build desktop version
 try cd build/
