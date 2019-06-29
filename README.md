@@ -22,15 +22,17 @@
 
 ## Instructions
 
-### GUI (Linux & Windows)
+Flash the **Arduino Uno** with `firmware/firmware.ino`
 
+### Electron GUI (Linux & Windows)
+
+- Download it from **Releases**
 - Run `ElDumper.AppImage` or `ElDumper.exe`
 
-### Python (Fedora)
+### Python CLI (Fedora)
 
 - `sudo dnf install python3`
 - `pip3 install pyserial`
-- Flash the **Arduino Uno** with `firmware/firmware.ino`
 - `python3 software/python-reader/reader.py` (check port `/dev/ttyACM0`)
 
 ## References
