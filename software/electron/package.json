@@ -48,7 +48,7 @@
     "serialport": "^7.1.5"
   },
   "devDependencies": {
-    "electron": "^4.2.0",
+    "electron": "^7.2.4",
     "electron-builder": "^20.38.2",
     "electron-rebuild": "^1.8.4",
     "husky": "^0.14.3",
