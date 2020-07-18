@@ -39,7 +39,7 @@
   "dependencies": {
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.19",
     "prop-types": "^15.5.10",
     "rc-progress": "^2.3.0",
     "react": "^15.5.4",
