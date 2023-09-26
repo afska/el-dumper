@@ -1,6 +1,8 @@
 # ElDumper
 
-:video_game: A GB Cartridge Dumper, based on [GBCartRead](https://github.com/insidegadgets/GBCartRead) :video_game:
+:video_game: A GB Cartridge Dumper, based on [GBCartRead](https://github.com/insidegadgets/GBCartRead).
+
+> <img alt="rlabs" width="16" height="16" src="https://user-images.githubusercontent.com/1631752/116227197-400d2380-a72a-11eb-9e7b-389aae76f13e.png" /> Created by [[r]labs](https://r-labs.io).
 
 ## Pictures
 
