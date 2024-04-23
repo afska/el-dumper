@@ -1,6 +1,9 @@
 # ElDumper
 
-:video_game: A GB Cartridge Dumper, based on [GBCartRead](https://github.com/insidegadgets/GBCartRead).
+🎮 A GB Cartridge Dumper, based on [GBCartRead](https://github.com/insidegadgets/GBCartRead). It adds an Electron app that acts as frontend.
+
+Both *GBCartRead* and *ElDumper* are licensed under a Creative Commons Attribution-NonCommercial 3.0 Unported License.
+http://creativecommons.org/licenses/by-nc/3.0/
 
 > <img alt="rlabs" width="16" height="16" src="https://user-images.githubusercontent.com/1631752/116227197-400d2380-a72a-11eb-9e7b-389aae76f13e.png" /> Created by [[r]labs](https://r-labs.io).
 
@@ -45,6 +48,8 @@ Flash the **Arduino Uno** with `firmware/firmware.ino`
 - The right 74HC595N shifts the low ports of the cartridge.
 
 ## Connections
+
+_(based on Hardware Picture 2)_
 
 - Connect 5V to the upper-right +
 - Connect GND to the upper-right -
