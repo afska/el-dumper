@@ -16,9 +16,9 @@
 
 ### Hardware
 
-![image](https://user-images.githubusercontent.com/1631752/56398010-edd0c800-621c-11e9-8048-cc8fcd4c1204.jpg)
+![image](https://github.com/afska/el-dumper/assets/1631752/1ab1d74b-02a9-4892-bbb5-eecb3e8cf226)
 
-![image](https://user-images.githubusercontent.com/1631752/56398179-9ed76280-621d-11e9-88cc-39521ff052c8.jpg)
+![image](https://user-images.githubusercontent.com/1631752/56398010-edd0c800-621c-11e9-8048-cc8fcd4c1204.jpg)
 
 ![image](https://user-images.githubusercontent.com/1631752/53384943-72107880-395b-11e9-828f-23b45eecf5db.png)
 
